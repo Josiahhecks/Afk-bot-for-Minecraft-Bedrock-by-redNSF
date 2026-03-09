@@ -1,7 +1,36 @@
-const bedrock = require('bedrock-protocol')
-const client = bedrock.createClient({
-  host: '191.96.231.17',   
-  port: 12931,         // optional, default 19132
-  username: 'Notch',   // the username you want to join as, optional if online mode
-  offline: true       // optional, default false. if true, do not login with Xbox Live. You will not be asked to sign-in if set to true.
-})
+// Complete working code that connects to the Minecraft server and handles events properly
+const mineflayer = require('mineflayer');
+
+// Create a bot instance to connect to the Minecraft server
+const bot = mineflayer.createBot({
+  host: 'your_server_ip',  // IP address of the Minecraft server
+  port: 25565,             // Port number
+  username: 'your_username', // Username for the bot
+});
+
+// Event listener for when the bot has successfully logged in
+bot.on('spawn', () => {
+  console.log('Bot has spawned in the game!');
+});
+
+// Event listener for chat messages
+bot.on('chat', (username, message) => {
+  if (username === bot.username) return; // Ignore messages from the bot itself
+  console.log(`${username}: ${message}`);
+
+  // Example of responding to a specific message
+  if (message === 'hello') {
+    bot.chat(`Hello ${username}!`);
+  }
+});
+
+// Event listener for when the bot encounters an error
+bot.on('error', (err) => {
+  console.error('Error:', err);
+});
+
+// Event listener for when the bot unexpectedly disconnects
+bot.on('end', () => {
+  console.log('Bot has disconnected from the server.');
+  // Optionally, you can implement reconnection logic here
+});
